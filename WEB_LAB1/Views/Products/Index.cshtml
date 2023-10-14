@@ -1,0 +1,70 @@
+﻿@model IEnumerable<WEB_LAB1.Models.Product>
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<style>
+    .image-container img {
+        width: 100%;
+        height: 300px;
+        object-fit: contain;
+    }
+    .title_text{
+        display:block;
+        text-align:center;
+    }
+</style>
+
+<h1 class="title_text">Товари</h1>
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4 col-xs-6 border-primary mb-3">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-12">
+                        <div class="card-header text-white bg-info" style="background-color:coral">
+                            <p class="card-text">
+                                <h5 class="card-title"  style="-webkit-line-clamp: 1; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; background-color:coral">
+                                    @item.ProductName
+                                </h5>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 image-container">
+                        <img src="@item.Link" alt="@item.ProductName">
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card-body">
+                            <p class="card-text">
+                                <b>Ціна: </b><a asp-controller="Products" asp-action="Details" asp-route-id="@item.Price">
+                                    @item.Price грн
+                                </a>
+                            </p>
+                            <p class="card-text">
+                                <b>Опис: </b><a asp-controller="Products" asp-action="Details" asp-route-id="@item.Description">
+                                    @item.Description
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card-footer ">
+                            <p class="card-text">
+                                <a class="btn btn-outline-primary float-right" asp-action="Details" asp-route-id="@item.Id">
+                                    <i class="bi bi-eye-fill"></i> Показати детальніше
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<p>
+    <a asp-action="Create">Створити новий товар</a>
+</p>

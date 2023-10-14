@@ -1,0 +1,41 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Магазин всякого</h1>
+    <p>всякий мотлох</p>
+</div>
+
+<div class="container">
+    <div class="row row-cols-2 row-cols-md-3 row-cols-sm-3">
+        <div class="col" id="chart1"></div>
+        <div class="col" id="chart2"></div>
+        <div class="col" id="chart3"></div>
+    </div>
+</div>
+
+@section scripts{
+    <script type "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            $.get('/api/Diagram/JsonData', 
+            function (JsonData) {
+                data = google.visualization.arrayToDataTable(JsonData, false);
+                var option = {
+                    title: "Співвідношення товарів та ціни",
+                    width: 500,
+                    height: 400
+                };
+                var chart1 = new google.visualization.PieChart(document.getElementById('chart1'));
+                chart1.draw(data, option);
+                var chart2 = new google.visualization.BarChart(document.getElementById('chart2'));
+                chart2.draw(data, option);
+                var chart3 = new google.visualization.LineChart(document.getElementById('chart3'));
+                chart3.draw(data, option);
+            })
+        }
+    </script>
+}
