@@ -4,33 +4,56 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Деталі</h1>
+<style>
+    .title_text {
+        display: block;
+        text-align: center;
+        margin-top: 20px;
+        color: #007BFF;
+    }
 
-<div>
+    .details-container {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .btn-custom {
+        background-color: #007BFF;
+        color: white;
+        margin-right: 10px;
+    }
+</style>
+
+<h1 class="title_text">Деталі замовлення</h1>
+
+<div class="container mt-5 details-container">
     <h4>Замовлення</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2 text-muted">
             @Html.DisplayNameFor(model => model.UserId)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.UserId)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2 text-muted">
             @Html.DisplayNameFor(model => model.OrderDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.OrderDate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2 text-muted">
             @Html.DisplayNameFor(model => model.TotalAmount)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.TotalAmount)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Назад</a>
+
+<div class="container mt-3">
+    <a asp-action="Edit" asp-route-id="@Model?.Id" class="btn btn-custom">Редагувати</a>
+    <a asp-action="Index" class="btn btn-outline-secondary">Назад</a>
 </div>

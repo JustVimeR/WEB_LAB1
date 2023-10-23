@@ -13,29 +13,96 @@
         <div class="col" id="chart2"></div>
         <div class="col" id="chart3"></div>
     </div>
+    <div>
+        <label for="filter">Фільтр об'єктів:</label>
+        <select id="category">
+            <option value="all">Всі точки</option>
+            <option value="Точки 1">Точки 1</option>
+            <option value="Точки 2">Точки 2</option>
+        </select>
+    </div>
+    <div id="map" style="height: 400px; width: 100%;"></div>
 </div>
 
 @section scripts{
-    <script type "text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
         google.charts.load('current', { 'packages': ['corechart'] });
         google.charts.setOnLoadCallback(drawChart);
         function drawChart() {
-            $.get('/api/Diagram/JsonData', 
-            function (JsonData) {
-                data = google.visualization.arrayToDataTable(JsonData, false);
-                var option = {
-                    title: "Співвідношення товарів та ціни",
-                    width: 500,
-                    height: 400
-                };
-                var chart1 = new google.visualization.PieChart(document.getElementById('chart1'));
-                chart1.draw(data, option);
-                var chart2 = new google.visualization.BarChart(document.getElementById('chart2'));
-                chart2.draw(data, option);
-                var chart3 = new google.visualization.LineChart(document.getElementById('chart3'));
-                chart3.draw(data, option);
-            })
+            $.get('/api/Diagram/JsonData',
+                function (JsonData) {
+                    data = google.visualization.arrayToDataTable(JsonData, false);
+                    var option = {
+                        title: "Співвідношення товарів та ціни",
+                        width: 500,
+                        height: 400
+                    };
+                    var chart1 = new google.visualization.PieChart(document.getElementById('chart1'));
+                    chart1.draw(data, option);
+                    var chart2 = new google.visualization.BarChart(document.getElementById('chart2'));
+                    chart2.draw(data, option);
+                    var chart3 = new google.visualization.LineChart(document.getElementById('chart3'));
+                    chart3.draw(data, option);
+                })
         }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8wS-5Qx-4ASDst0zyZeORwrgdwrg0Rr8&callback=initMap"></script>
+    <script>
+        var allMarkers = [];
+        function filterMarkers(category) {
+            for (var i = 0; i < allMarkers.length; i++) {
+                var marker = allMarkers[i];
+                if (category === "all" || marker.getTitle() === category) {
+                    marker.setVisible(true); // Показуємо маркер
+                } else {
+                    marker.setVisible(false); // Приховуємо маркер
+                }
+            }
+        }
+
+
+
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 10,
+                center: { lat: 50.4501, lng: 30.5234 }
+            });
+
+            var locations = [
+                { lat: 50.4201, lng: 30.1654645, title: 'Точки 1' },
+                { lat: 50.1301, lng: 30.2434645, title: 'Точки 2' },
+                { lat: 50.2601, lng: 30.398464, title: 'Точки 1' },
+                { lat: 50.3781, lng: 30.4654523, title: 'Точки 2' },
+                { lat: 50.5901, lng: 30.527642, title: 'Точки 1' },
+                { lat: 50.6541, lng: 30.6432456, title: 'Точки 2' },
+                { lat: 50.7761, lng: 30.785845, title: 'Точки 1' },
+                { lat: 50.83451, lng: 30.85342354, title: 'Точки 2' },
+            ];
+
+            locations.forEach(function (location) {
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    title: location.title
+                });
+                allMarkers.push(marker);
+            });
+        }
+        document.getElementById('category').addEventListener('change', function () {
+            filterMarkers(this.value);
+        });
+
+        document.getElementById('filter').addEventListener('change', function () {
+            filterMarkers(this.value);
+        });
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-S8WYD8WKZ2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-S8WYD8WKZ2');
     </script>
 }

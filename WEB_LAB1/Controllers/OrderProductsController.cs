@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +18,6 @@ namespace WEB_LAB1.Controllers
         {
             _context = context;
         }
-
         // GET: OrderProducts
         public async Task<IActionResult> Index()
         {
@@ -45,6 +45,10 @@ namespace WEB_LAB1.Controllers
         // GET: OrderProducts/Create
         public IActionResult Create()
         {
+            // Заповнення списків доступних ID
+            ViewBag.OrderIds = new SelectList(_context.Orders, "Id", "Id");
+            ViewBag.ProductIds = new SelectList(_context.Products, "Id", "ProductName");
+
             return View();
         }
 
