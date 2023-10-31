@@ -18,6 +18,8 @@
 </style>
 
 <h1 class="title_text">Товари</h1>
+
+
 <div class="row">
     @foreach (var item in Model)
     {
@@ -79,5 +81,27 @@
 
         gtag('config', 'G-S8WYD8WKZ2');
     </script>
+    <script>
+        $(document).ready(function () {
+            $("#Username").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Users/AutocompleteUsername",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            term: request.term
+                        },
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 3,
+                delay: 300 // затримка в 300 мілісекунд
+            });
+        });
+    </script>
+
 }
 

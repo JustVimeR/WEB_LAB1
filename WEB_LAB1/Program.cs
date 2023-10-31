@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.AnalyticsReporting.v4;
 using Google.Apis.Services;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 

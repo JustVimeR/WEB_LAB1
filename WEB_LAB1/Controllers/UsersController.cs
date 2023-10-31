@@ -158,5 +158,23 @@ namespace WEB_LAB1.Controllers
         {
           return _context.Users.Any(e => e.Id == id);
         }
+        [HttpPost]
+        public async Task<JsonResult> AutocompleteUsername(string term)
+        {
+            var usernames = await _context.Users
+                            .Where(u => u.Username.Contains(term))
+                            .Select(u => u.Username)
+                            .Take(10)
+                            .ToListAsync();
+
+            return Json(usernames);
+        }
+
+        [HttpPost]
+        public IActionResult Search(string Username)
+        {
+            var users = _context.Users.Where(u => u.Username.Contains(Username)).ToList();
+            return View("Index", users);
+        }
     }
 }

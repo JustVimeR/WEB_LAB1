@@ -1,4 +1,6 @@
-﻿@model IEnumerable<WEB_LAB1.Models.User>
+﻿
+
+@model IEnumerable<WEB_LAB1.Models.User>
 
 @{
     ViewData["Title"] = "Index";
@@ -12,21 +14,28 @@
 </style>
 
 <h1 class="title_text">Користувачі</h1>
-
+<form asp-action="Search" method="post" class="mb-3">
+    <div class="form-group">
+        <label for="SearchUsername">Пошук користувача:</label>
+        <input type="text" id="SearchUsername" name="Username" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Пошук</button>
+</form>
 <div class="container mt-5">
     <a asp-action="Create" class="btn btn-primary mb-3">Додати нового</a>
+
     <div class="table-responsive">
         <table class="table table-bordered table-hover">
             <thead class="bg-info text-white">
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Username)
+                        @Html.DisplayNameFor(model => model.First().Username)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Email)
+                        @Html.DisplayNameFor(model => model.First().Email)
                     </th>
                     <th>
-                        @Html.DisplayNameFor(model => model.Password)
+                        @Html.DisplayNameFor(model => model.First().Password)
                     </th>
                     <th>Дії</th>
                 </tr>
@@ -55,3 +64,29 @@
         </table>
     </div>
 </div>
+
+@section scripts{
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#SearchUsername").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Users/AutocompleteUsername",
+                        type: "POST",
+                        dataType: "json",
+                        data: {
+                            term: request.term
+                        },
+                        success: function (data) {
+                            response(data);
+                        }
+                    });
+                },
+                minLength: 3,
+                delay: 300 // затримка в 300 мілісекунд
+            });
+        });
+    </script>
+}
